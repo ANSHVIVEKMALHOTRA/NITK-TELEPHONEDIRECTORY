@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dummyapp/screens/searchscreen.dart';
+import 'package:TelephoneDirectory/screens/searchscreen.dart';
 
 void main() {
   runApp(const MyApp());

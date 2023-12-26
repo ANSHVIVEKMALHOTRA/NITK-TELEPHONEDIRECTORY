@@ -2,11 +2,13 @@
 
 import 'dart:convert';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:dummyapp/screens/uidetails.dart';
+import 'package:dio/dio.dart';
+import 'package:TelephoneDirectory/screens/uidetails.dart';
 import 'package:http/http.dart' as http;
-import 'package:dummyapp/models/facultyindividual.dart';
-import 'package:dummyapp/models/department.dart';
+import 'package:TelephoneDirectory/models/facultyindividual.dart';
+import 'package:TelephoneDirectory/models/department.dart';
 
 
 
@@ -37,13 +39,57 @@ var nametext= TextEditingController();
 var topictext=TextEditingController();
 bool isapicall=false;
 bool isdepartment=false;
-List<facultyindividual> filteredlist=[];
+List<facultyindividual> filteredlist=[ facultyindividual(
+    id: 1,
+    name: "Prof. John Doe",
+    email: "john.doe@university.edu",
+    siteName: "Main Campus",
+    joiningDate: "2015-01-15",
+    createdAt: "2023-11-20 10:45:00",
+    updatedAt: "2023-12-21 11:48:00",
+    departmentId: 2,
+    mobile1: 9876543210,
+    designationId: 3,
+    position1Id: 4,
+  ),
+  facultyindividual(
+    id: 3,
+    name: "Prof. Peter Lee",
+    email: "peter.lee@university.edu",
+    siteName: "Main Campus",
+    joiningDate: "2020-09-22",
+    createdAt: "2023-11-21 12:00:00",
+    updatedAt: "2023-12-21 10:30:00",
+    departmentId: 4,
+    mobile1: 5556667778,
+    mobile2: 5596667778,
+    landlineResidential: 8889990001,
+    landlineOfficeIntercom: 222333,
+    designationId: 2,
+    position1Id: 1,
+  ),
+    facultyindividual(
+    id: 3,
+    name: "Prof. Peter Lee",
+    email: "peter.lee@university.edu",
+    siteName: "Main Campus",
+    joiningDate: "2020-09-22",
+    createdAt: "2023-11-21 12:00:00",
+    updatedAt: "2023-12-21 10:30:00",
+    departmentId: 4,
+    mobile1: 5556667778,
+    landlineResidential: 8889990001,
+    landlineOfficeIntercom: 222333,
+    designationId: 2,
+    position1Id: 1,
+  ), 
+  ];
 
 
 Future<void> _fetchdepartments() async
 {
   final url=Uri.parse("http://telephone.nitk.ac.in/api/v1/faculties");
-  final response= await http.get(url);
+  final response = await http.get(url).timeout(Duration(seconds: 30));
 
   final data= jsonDecode(response.body);
   if(response.statusCode ==200)
@@ -59,12 +105,13 @@ else
   print('Failed to load');
 }
 }
+final dio = Dio();
 
 Future<void> _fetchindividuals() async {
 final url = Uri.parse(
 "http://telephone.nitk.ac.in/api/v1/faculties"
 );
-final response = await http.get(url);
+final response = await http.get(url).timeout(Duration(seconds: 30));
 print(response.body);
 final data= jsonDecode(response.body);
 print(response.statusCode);
@@ -115,26 +162,7 @@ else
 }
 return false;
    }).toList();
-   
-   
-  /*  filteredlist = completelist.where((element){
-if(n=="n" && i != -1)
-{
-  return element.departmentId==i?true:false;
-}
-else
-if(n != "n" && i == -1)
-{
-  return element.name == n;
-}
-else
-if(n!= "n" && i != -1)
-{
-  return element.name==n && element.departmentId==i;
-}
-return true;
- }).toList();
-*/
+   //removed the code
 });
  
 }
@@ -153,7 +181,7 @@ void dispose(){
 void initState() {
   _fetchindividuals();
  // _fetchdepartments();
-    filteredlist=allindividuals;
+   filteredlist=allindividuals;
     super.initState();
   }
 
@@ -161,172 +189,162 @@ void initState() {
   Widget build(BuildContext context)
   {
 
-    Widget content = isapicall ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                              const SizedBox(height: 5,),
-                         
-                            Container(
-                             padding: const EdgeInsets.all(6),
-                              child: TextField(
-                                
-                                controller: nametext,
-                                onChanged: (value){
-                                  name=value;
-                                  filteredlistonparameters(name, _dropdownvalue);},
-                                 decoration: InputDecoration(
-                                  labelText:  "Name" ,
-                                  labelStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                                  focusedBorder:OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(7.0),
-                                    gapPadding:1,
-                                    borderSide: const BorderSide(width: 2,color:Color(0xFF349CDC)),
-                                                 ) ,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(7.0),
-                                    gapPadding:5,
-                                    borderSide: const BorderSide(width: 2,color: Color(0xFF192F59) ),
-                                  ),
-                                  disabledBorder:  OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(7.0),
-                                    gapPadding:5,
-                                    borderSide: const BorderSide(width: 2,color:Color.fromARGB(255, 110, 109, 109) ),
-                                  ),
-                                 // hintText: "Enter the name",
-                                 ),
-                                 ),
-                            ),
-                            const SizedBox(height: 5,),
-                           const Row(
-                            children: 
-                                   [
-                                    SizedBox(width: 10,),
-                                    ]),
-                         
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [ 
-                                ElevatedButton(onPressed: () async{
-                                  await showModalBottomSheet(
-                                    elevation: 15,
-                                    context: context, 
-                                    builder: (context) {
-                                      return Column(
-                                        children: [
-                                          const SizedBox(height: 21,),
-                                           const Row(children: [SizedBox(width: 10,),
-                                     Text("Branch"),]),
-                                     const SizedBox(height: 4,),
-                            Row(
-                              children: 
-                                   [ const SizedBox(width: 10,),
-                                      DropdownButton(
-
-                               hint: const Text("Select the branch"),
-                               elevation: 8,
-                                 items: const[
-                                  DropdownMenuItem( value:-1, child: Text("Select the branch"),),
-                                   DropdownMenuItem( value:1, child: Text("Computer Science"),),
-                                     DropdownMenuItem( value: 2 ,child: Text("Civil"),),
-                                      DropdownMenuItem( value: 3 ,child: Text("Information Technology"),),
-                                       DropdownMenuItem( value: 6 ,child: Text("Water resources and Ocean Eng"),),
-                                        DropdownMenuItem( value: 7 ,child: Text("Chemical"),),
-                                         DropdownMenuItem( value: 8 ,child: Text("Chemistry"),),
-                                          DropdownMenuItem( value: 9 ,child: Text("Electrical and Electronics"),),
-                                           DropdownMenuItem( value: 10 ,child: Text("Electrical and Communication"),),
-                                            DropdownMenuItem( value: 11 ,child: Text("MACS"),),
-                                          DropdownMenuItem( value: 12 ,child: Text("Mechanical Engineering"),),
-                                        DropdownMenuItem( value: 13 ,child: Text("Metallurgical and Materials Engineering"),),
-                                      DropdownMenuItem( value: 14 ,child: Text("Mining"),),
-                                    DropdownMenuItem( value: 15 ,child: Text("Physics"),),
-                                  DropdownMenuItem( value: 16 ,child: Text("School of Humanitics, Social Sciences, \n and Management")),
-                                  DropdownMenuItem( value: 17 ,child: Text("CDC"),),
-                                  DropdownMenuItem( value: 18 ,child: Text("Central Library"),),
-                                  ] ,
-                                  value: _dropdownvalue,
-                                 onChanged:
-                                 (newvalue)
-                                 {
-                                 _dropdownvalue=newvalue!;
-                                 filteredlistonparameters(name, _dropdownvalue);
-                                 Navigator.pop(context);
-                                 } 
-                                  ),
-                                  ])
-
-                                        ],
-                                      );
-                                    },);
-
-                                  },
-                                  style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll( Color(0xFF349CDC))), child: const Text("Filters", style: TextStyle(color: Colors.white),),
-                                  ),
-                                  const SizedBox(width: 9,),
-                                  
-                                  TextButton(onPressed: (){
-                                         setState(() {
-                                           filteredlistonparameters("", -1);
-                                           nametext.text="";
-                                         });    
-                                    
-                                  },
-                                    child: const Text("Reset",style: TextStyle(color: Colors.black),))
-                              ],
-                            ),
-                Expanded(
-                child:  ListView.builder(
-        itemCount: filteredlist.length,
- itemBuilder:(context, index){
-         return Container(
-          height: 85,
-          padding: const EdgeInsets.only(left: 7,right: 7,top: 2,bottom: 2),
-          child: Card(
-            color:const Color(0xFF192F59),
-            child: Row(
-              children: [
-                const SizedBox(width: 10,),
-                Text(" ${index+1}",style: const TextStyle(color: Colors.white),),
-                const SizedBox(width: 15,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+    Widget content = isapicall ?  Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${filteredlist[index].name}",style:const TextStyle(color: Colors.white,fontSize: 15,)
-  )
-                   ,
-                  
-                                       Text("Landline: ${filteredlist[index].mobile2.toString()}",
-                                       style:const TextStyle(color: Colors.white,fontSize: 12,)),                   
-                      Text("Mobile: ${filteredlist[index].mobile1.toString()}",style:const TextStyle(color: Colors.white,fontSize: 12,)),
-                  ],
-                ),
-                const Spacer(),
-               TextButton(
-                
-                style: const ButtonStyle(
-                     backgroundColor: MaterialStatePropertyAll( Color(0xFF349CDC)),
-                     iconSize: MaterialStatePropertyAll(11),
-
-                     ),
-                onPressed: ()
-               {
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>Info(userDetails: filteredlist[index])),);
-               }
-               
-               ,child: const Text("Details",style: TextStyle(color: Colors.white),) ,
-               
-               ),
-               const SizedBox(width: 7,)
+                                const SizedBox(height: 5,),
+                           
+                              Container(
+                               padding: const EdgeInsets.all(6),
+                                child: TextField(
+                                  
+                                  controller: nametext,
+                                  onChanged: (value)
+                                  {
+                                    name=value;
+                                    filteredlistonparameters(name, _dropdownvalue);
+                                    },
+                                   decoration: InputDecoration(
+                                    labelText:  "Name" ,
+                                    labelStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                                    focusedBorder:OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(7.0),
+                                      gapPadding:1,
+                                      borderSide: const BorderSide(width: 2,color:Color(0xFF349CDC)),
+                                                   ) ,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(7.0),
+                                      gapPadding:5,
+                                      borderSide: const BorderSide(width: 2,color: Color(0xFF192F59) ),
+                                    ),
+                                    disabledBorder:  OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(7.0),
+                                      gapPadding:5,
+                                      borderSide: const BorderSide(width: 2,color:Color.fromARGB(255, 110, 109, 109) ),
+                                    ),
+                                   // hintText: "Enter the name",
+                                   ),
+                                   ),
+                              ),
+                              const SizedBox(height: 5,),
+                           
+                                      SizedBox(width: 10,),
+                                    
+                           
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [ 
+                                   const SizedBox(width: 11,),
+                                    Expanded(
+                                      child:
+                                      
+                                      Container(
+                                padding: EdgeInsets.all(2),
+                               child:DropdownButton( isExpanded: true,
+                                 iconSize: 25,
+                                    borderRadius: BorderRadius.all(Radius.circular(7)),
+                                 hint: const Text("Select the section"),
+                                 elevation: 8,
+                                   items: const[
+                                    DropdownMenuItem( value:-1, child: Text("Select the section"),),
+                                     DropdownMenuItem( value:1, child: Text("Computer Science"),),
+                                       DropdownMenuItem( value: 2 ,child: Text("Civil"),),
+                                        DropdownMenuItem( value: 3 ,child: Text("Information Technology"),),
+                                         DropdownMenuItem( value: 6 ,child: Text("Water resources and Ocean Eng"),),
+                                          DropdownMenuItem( value: 7 ,child: Text("Chemical"),),
+                                           DropdownMenuItem( value: 8 ,child: Text("Chemistry"),),
+                                            DropdownMenuItem( value: 9 ,child: Text("Electrical and Electronics"),),
+                                             DropdownMenuItem( value: 10 ,child: Text("Electrical and Communication"),),
+                                              DropdownMenuItem( value: 11 ,child: Text("MACS"),),
+                                            DropdownMenuItem( value: 12 ,child: Text("Mechanical Engineering"),),
+                                          DropdownMenuItem( value: 13 ,child: Text("Metallurgical and Materials Engineering"),),
+                                        DropdownMenuItem( value: 14 ,child: Text("Mining"),),
+                                      DropdownMenuItem( value: 15 ,child: Text("Physics"),),
+                                    DropdownMenuItem( value: 16 ,child: Text("School of Humanitics, Social Sciences, \n and Management")),
+                                    DropdownMenuItem( value: 17 ,child: Text("CDC"),),
+                                    DropdownMenuItem( value: 18 ,child: Text("Central Library"),),
+                                    ] ,
+                                    value: _dropdownvalue,
+                                   onChanged:
+                                   (newvalue)
+                                   {
+                                   _dropdownvalue=newvalue!;
+                                   filteredlistonparameters(name, _dropdownvalue);
+                   
+                                   } 
+                                    ) ),
+      ),
+                                
+                                    const SizedBox(width: 9,),
+                                    
+                                    TextButton(
+      
+                                      style: ButtonStyle(
+                                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius:BorderRadius.all(Radius.circular(11)) )),
+                                        backgroundColor:MaterialStatePropertyAll( Color(0xFF192F59)) ),
+                                      onPressed: (){
+                                           setState(() {
+                                             filteredlistonparameters("", -1);
+                                             _dropdownvalue=-1;
+                                             nametext.text="";
+                                           });    
+                                    },
+                                      child: const Text("Reset",style: TextStyle(color: Colors.white),)),
+                                      SizedBox(width: 7,)
+                                ],
+                              ),
+                              Container(
+                                margin:EdgeInsets.fromLTRB(9, 0, 9, 0),
+                               // padding: ,
+                                color: Color(0xFF192F59),
+                                height: 3,
+                              ),
+                              SizedBox(height: 4,),
+                              
+                Expanded(
+                  child: Scaffold(
+                    body: ListView.builder(
+                     
+                              itemCount: filteredlist.length,
+                           itemBuilder:(context, index){
+                               return Container(
+                              margin: EdgeInsets.fromLTRB(9, 3, 9, 2),
+                              decoration: BoxDecoration(
+                              ),
+                                child: ListTile(
+                          
+                                  shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0), // Adjust radius
+                          // Add border if desired
+                            ),
+                              //    titleColor:
+                              leading: Text(" ${index+1}",style: const TextStyle(color: Colors.white),),
+                             minLeadingWidth: 12,
+                                  title: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("${filteredlist[index].name}",style:const TextStyle(color: Colors.white,fontSize: 15,)),                   
+                            Text("Mobile: ${filteredlist[index].mobile1.toString()}",style:const TextStyle(color: Colors.white,fontSize: 12,)),
+                        ],
+                      ),
+                    ],
+                                  ),
+                                  tileColor: const Color(0xFF192F59),
+                                  onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) =>Info(userDetails: filteredlist[index])),);
+                     },
+                                ) 
+                            ,);
+                           }, 
+                          ),
+                  ),
+                )
+          
               ],
-            ),
-            
-          ) 
-      ,);
-     }, 
-    )
-   ), 
-            ],
-             ): LoadingPage();
+               ): LoadingPage();
     return Scaffold(
        appBar: AppBar(
                        title: const Text("Telephone Directory",style: TextStyle(color: Colors.white),),
@@ -348,9 +366,6 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
-        
-        
   
       body: Stack(
         children: <Widget>[
@@ -367,7 +382,7 @@ class LoadingPage extends StatelessWidget {
                       width: 200, // Adjust the width of the image
                       height: 200, // Adjust the height of the image
                       child: Image.asset(
-                        'lib/assets/image_assets.jpg',
+                        'assets/image_assets.jpg',
                        // fit: BoxFit.contain, // Adjust the fit of the image
                       ),
                     ),
@@ -380,8 +395,7 @@ class LoadingPage extends StatelessWidget {
                   height: 15.0,
                   color: Color.fromARGB(255, 255, 255, 255), // Loading bar color
                 ),
-              const
-              CircularProgressIndicator(color: Color(0xFF192F59), )
+              const CircularProgressIndicator(color: Color(0xFF192F59), )
               ],
             ),
           ),
