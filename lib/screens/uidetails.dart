@@ -207,7 +207,7 @@ class _InfoState extends State<Info> {
                     )
                 ),
 
-                if(widget.userDetails.landlineOffice!=null)
+                if(widget.userDetails.landlineOfficeDirect!=null)
                   Card(
                     child: ListTile(
                       minLeadingWidth: 20,
@@ -216,14 +216,14 @@ class _InfoState extends State<Info> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "${widget.userDetails.landlineOffice}",
+                            "${widget.userDetails.landlineOfficeDirect}",
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           ElevatedButton(
                             style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF349CDC))),
                             onPressed: () {
-                              _makingPhoneCall(widget.userDetails.landlineOffice.toString()); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
+                              _makingPhoneCall(widget.userDetails.landlineOfficeDirect.toString()); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
                             },
                             child:const  Icon(Icons.call,color: Colors.white,),
                           ),

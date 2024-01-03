@@ -39,51 +39,7 @@ var nametext= TextEditingController();
 var topictext=TextEditingController();
 bool isapicall=false;
 bool isdepartment=false;
-List<facultyindividual> filteredlist=[ facultyindividual(
-    id: 1,
-    name: "Prof. John Doe",
-    email: "john.doe@university.edu",
-    siteName: "Main Campus",
-    joiningDate: "2015-01-15",
-    createdAt: "2023-11-20 10:45:00",
-    updatedAt: "2023-12-21 11:48:00",
-    departmentId: 2,
-    mobile1: 9876543210,
-    designationId: 3,
-    position1Id: 4,
-  ),
-  facultyindividual(
-    id: 3,
-    name: "Prof. Peter Lee",
-    email: "peter.lee@university.edu",
-    siteName: "Main Campus",
-    joiningDate: "2020-09-22",
-    createdAt: "2023-11-21 12:00:00",
-    updatedAt: "2023-12-21 10:30:00",
-    departmentId: 4,
-    mobile1: 5556667778,
-    mobile2: 5596667778,
-    landlineResidential: 8889990001,
-    landlineOfficeIntercom: 222333,
-    designationId: 2,
-    position1Id: 1,
-  ),
-    facultyindividual(
-    id: 3,
-    name: "Prof. Peter Lee",
-    email: "peter.lee@university.edu",
-    siteName: "Main Campus",
-    joiningDate: "2020-09-22",
-    createdAt: "2023-11-21 12:00:00",
-    updatedAt: "2023-12-21 10:30:00",
-    departmentId: 4,
-    mobile1: 5556667778,
-    landlineResidential: 8889990001,
-    landlineOfficeIntercom: 222333,
-    designationId: 2,
-    position1Id: 1,
-  ), 
-  ];
+List<facultyindividual> filteredlist=[];
 
 
 Future<void> _fetchdepartments() async
@@ -105,24 +61,25 @@ else
   print('Failed to load');
 }
 }
-final dio = Dio();
+
 
 Future<void> _fetchindividuals() async {
 final url = Uri.parse(
 "http://telephone.nitk.ac.in/api/v1/faculties"
 );
 final response = await http.get(url).timeout(Duration(seconds: 30));
-print(response.body);
+//print(response.body);
 final data= jsonDecode(response.body);
-print(response.statusCode);
-//print(response);
+//print(response.statusCode);
+print(response);
 
  if(response.statusCode ==200)
  {
  for(final i in data)
  {
   allindividuals.add(facultyindividual.fromJson(i));
-  
+ 
+ //some changes
  }
  setState(() {
     isapicall=true;
@@ -228,9 +185,7 @@ void initState() {
                               ),
                               const SizedBox(height: 5,),
                            
-                                      SizedBox(width: 10,),
-                                    
-                           
+                                      SizedBox(width: 10,),//                           
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [ 
