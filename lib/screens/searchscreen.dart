@@ -38,7 +38,7 @@ List<facultyindividual> filteredlist=[];
 
 Future<void> _fetchdepartments() async
 {
-  final url=Uri.parse("http://telephone.nitk.ac.in/api/v1/faculties");
+  final url=Uri.parse("http://telephone.nitk.ac.in/api/v1/departments");
   final response = await http.get(url).timeout(Duration(seconds: 30));
 
   final data= jsonDecode(response.body);
@@ -87,6 +87,7 @@ else
   print('Failed to load the API call that ypu were mKINGGGG');
 }
 allindividuals.sort();
+await _fetchdepartments();
 
 }
 
@@ -279,11 +280,13 @@ void initState() {
               filteredlist[index].imageUrl.toString(),
                // Replace with your actual avatar image URL
             ),):CircleAvatar(
+            backgroundColor: Colors.white,
             radius: 22.0, // Set the radius of the circle
             child: Icon(Icons.person,color: Colors.black),), 
                              minLeadingWidth: 10,
                                   title: Row(
                     children: [
+                      Container(width: 2,color: Colors.white,),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,15 +312,15 @@ void initState() {
                                   tileColor: const Color(0xFF192F59),
                                   onTap: (){
                                 Navigator.push(
-                                  context, MaterialPageRoute(
+                                    context, MaterialPageRoute(
                                     builder: (context) =>Info(
-                                      userDetails: filteredlist[index]
-                                )
+                                    userDetails: filteredlist[index]    
+                                  )
                               )
                           ,);
-                     },
-                  ) 
-                ,);
+                        },
+                     ) 
+                 ,);
               }, 
             ),
            ),

@@ -1,22 +1,17 @@
-
-
-
-//import 'package:TelephoneDirectory/models/facultyindividual.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';  //format changes
 import 'package:flutter/material.dart';
-import 'package:swipe_to/swipe_to.dart';
-
-//import 'package:android_intent/android_intent.dart';
+import 'package:swipe_to/swipe_to.dart'; //changes
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
-
+import 'package:TelephoneDirectory/models/department.dart';
 import 'package:TelephoneDirectory/models/facultyindividual.dart';
 
 class Info extends StatefulWidget {
 
-  
+
   Info({super.key,required this.userDetails});
   facultyindividual userDetails;
+
   // This widget is the root of your application.
   @override
   State<Info> createState(){
@@ -122,10 +117,7 @@ class _InfoState extends State<Info> {
                             "${widget.userDetails.name}",
                             style:const  TextStyle(fontSize: 25 ,fontWeight: FontWeight.bold),
                           ), //NAME OF THE PROFFESOR
-                          Text(
-                            widget.userDetails.designationId.toString(),
-                            style: TextStyle(fontSize: 19, color: Colors.black),
-                          ), // THEIR POSITION OR POST OR ANY KIND OF DESIGNATION
+                           // THEIR POSITION OR POST OR ANY KIND OF DESIGNATION
                           const   SizedBox(
                             height: 10,
                           ),
@@ -210,7 +202,7 @@ class _InfoState extends State<Info> {
                     )
                 ),
 
-                if(widget.userDetails.landlineOfficeDirect!=null)
+                if(widget.userDetails.landlineOfficeIntercom!=null)
                   Card(
                     child: ListTile(
                       minLeadingWidth: 20,
@@ -218,15 +210,17 @@ class _InfoState extends State<Info> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            "${widget.userDetails.landlineOfficeDirect}",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Text(
+                              "${widget.userDetails.landlineOfficeIntercom}",
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                           ),
                           const Spacer(),
                           ElevatedButton(
                             style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF349CDC))),
                             onPressed: () {
-                              _makingPhoneCall(widget.userDetails.landlineOfficeDirect.toString()); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
+                              _makingPhoneCall(widget.userDetails.landlineOfficeIntercom.toString()); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
                             },
                             child:const  Icon(Icons.call,color: Colors.white,),
                           ),
@@ -279,6 +273,8 @@ class _InfoState extends State<Info> {
                       ),
                     )
                 ),
+                if( widget.userDetails.joiningDate !=null)
+                
                 Card(                                         //card2
                     child: ListTile(
                       minLeadingWidth: 20,
@@ -298,29 +294,7 @@ class _InfoState extends State<Info> {
                       ),
                     )
                 ),
-
-
-                Card(
-                    child: ListTile(
-                      minLeadingWidth: 20,
-                      leading: const Icon(Icons.admin_panel_settings_outlined),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(child:Text(
-                            "${widget.userDetails.departmentId}",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ) )
-                          ,
-                        ],
-                      ),
-                      subtitle: Text(
-                        "Department ID",
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    )
-                ),
-
+//
 //
 
                 SizedBox(
