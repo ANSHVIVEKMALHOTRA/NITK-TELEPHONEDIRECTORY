@@ -13,6 +13,8 @@ import 'dart:io';
 import 'package:TelephoneDirectory/models/facultyindividual.dart';
 
 class Info extends StatefulWidget {
+
+  
   Info({super.key,required this.userDetails});
   facultyindividual userDetails;
   // This widget is the root of your application.
