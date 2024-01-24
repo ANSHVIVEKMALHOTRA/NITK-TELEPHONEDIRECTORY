@@ -1,19 +1,13 @@
 //import 'dart:js_interop';
 
 import 'dart:convert';
-
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+//
+import 'package:flutter/material.dart';//
 import 'package:TelephoneDirectory/screens/uidetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:TelephoneDirectory/models/facultyindividual.dart';
 import 'package:TelephoneDirectory/models/department.dart';
-
-
-
-//import 'package:dummyapp/screens/uidetails.dart';
-
+//
 
 List<facultyindividual> allindividuals=[];
 List<department> alldepartments=[];
@@ -64,10 +58,12 @@ else
 
 
 Future<void> _fetchindividuals() async {
+
 final url = Uri.parse(
 "http://telephone.nitk.ac.in/api/v1/faculties"
 );
-final response = await http.get(url).timeout(Duration(seconds: 30));
+
+final response = await http.get(url);
 //print(response.body);
 final data= jsonDecode(response.body);
 //print(response.statusCode);
@@ -269,45 +265,69 @@ void initState() {
                                 child: ListTile(
                           
                                   shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0), // Adjust radius
+                          borderRadius: BorderRadius.circular(3.0), // Adjust radius
                           // Add border if desired
                             ),
                               //    titleColor:
-                              leading: Text(" ${index+1}",style: const TextStyle(color: Colors.white),),
-                             minLeadingWidth: 12,
+                              leading: filteredlist[index].imageUrl != null ? CircleAvatar(
+                                
+            radius: 22.0, // Set the radius of the circle
+            backgroundImage: NetworkImage(
+              filteredlist[index].imageUrl.toString(),
+               // Replace with your actual avatar image URL
+            ),):CircleAvatar(
+            radius: 22.0, // Set the radius of the circle
+            child: Icon(Icons.person,color: Colors.black),), 
+                             minLeadingWidth: 10,
                                   title: Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("${filteredlist[index].name}",style:const TextStyle(color: Colors.white,fontSize: 15,)),                   
-                            Text("Mobile: ${filteredlist[index].mobile1.toString()}",style:const TextStyle(color: Colors.white,fontSize: 12,)),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("${filteredlist[index].name}",
+                            overflow: TextOverflow.fade ,
+                            maxLines: 1,
+                            style:const TextStyle(
+                              color: Colors.white,fontSize: 15                          
+                              )
+                              ),                   
+                              Text("Office: ${filteredlist[index].landlineOfficeIntercom.toString()}",
+                              style:const TextStyle(
+                                color: Colors.white,fontSize: 12,
+                                )
+                              ),
+                          ],
+                        ),
                       ),
                     ],
                                   ),
                                   tileColor: const Color(0xFF192F59),
                                   onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) =>Info(userDetails: filteredlist[index])),);
+                                Navigator.push(
+                                  context, MaterialPageRoute(
+                                    builder: (context) =>Info(
+                                      userDetails: filteredlist[index]
+                                )
+                              )
+                          ,);
                      },
-                                ) 
-                            ,);
-                           }, 
-                          ),
-                  ),
-                )
-          
-              ],
-               ): LoadingPage();
+                  ) 
+                ,);
+              }, 
+            ),
+           ),
+         )
+       ],
+       ): LoadingPage();
     return Scaffold(
        appBar: AppBar(
                        title: const Text("Telephone Directory",style: TextStyle(color: Colors.white),),
                        backgroundColor: const Color(0xFF192F59),
                        centerTitle: true,
                       ),
-             body: content ,
-              
+             body: content,              
     );
   }
 }  

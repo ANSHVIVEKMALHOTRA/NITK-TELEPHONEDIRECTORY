@@ -103,10 +103,10 @@ class _InfoState extends State<Info> {
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
                 Row(
                   children: <Widget>[
-                    const CircleAvatar(
+                     CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(
-                          'https://media.licdn.com/dms/image/D5603AQEu4GLWV0rq6Q/profile-displayphoto-shrink_800_800/0/1692427344601?e=2147483647&v=beta&t=mzeFXfo7bnwCELchV_ciRGwElYtdHxwUyz2KvmjnVt4'),
+                         widget.userDetails.imageUrl.toString() ),
                     ),
                     const  Padding(padding: EdgeInsets.only(left: 20)),
                     Container(
