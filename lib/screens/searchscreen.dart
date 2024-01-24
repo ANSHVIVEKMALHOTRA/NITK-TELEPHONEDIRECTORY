@@ -133,7 +133,7 @@ void dispose(){
 @override
 void initState() {
   _fetchindividuals();
- // _fetchdepartments();
+// _fetchdepartments();
    filteredlist=allindividuals;
     super.initState();
   }
@@ -161,9 +161,10 @@ void initState() {
                                     labelText:  "Name" ,
                                     labelStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                                     focusedBorder:OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(7.0),
+                                      borderRadius: BorderRadius.circular(150.0),
                                       gapPadding:1,
-                                      borderSide: const BorderSide(width: 2,color:Color(0xFF349CDC)),
+                                      borderSide: const BorderSide(width: 2,color:Color(
+                                          0xFF29043A)),
                                                    ) ,
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(7.0),
@@ -173,7 +174,8 @@ void initState() {
                                     disabledBorder:  OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(7.0),
                                       gapPadding:5,
-                                      borderSide: const BorderSide(width: 2,color:Color.fromARGB(255, 110, 109, 109) ),
+                                      borderSide: const BorderSide(width: 2,color:Color.fromARGB(
+                                          255, 0, 0, 0) ),
                                     ),
                                    // hintText: "Enter the name",
                                    ),
@@ -192,7 +194,7 @@ void initState() {
                                       Container(
                                 padding: EdgeInsets.all(2),
                                child:DropdownButton( isExpanded: true,
-                                 iconSize: 25,
+                                 iconSize: 35,
                                     borderRadius: BorderRadius.all(Radius.circular(7)),
                                  hint: const Text("Select the section"),
                                  elevation: 8,
@@ -231,8 +233,9 @@ void initState() {
                                     TextButton(
       
                                       style: ButtonStyle(
-                                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius:BorderRadius.all(Radius.circular(11)) )),
-                                        backgroundColor:MaterialStatePropertyAll( Color(0xFF192F59)) ),
+                                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius:BorderRadius.all(Radius.circular(15)) )),
+                                        backgroundColor:MaterialStatePropertyAll( Color(
+                                            0xFF192F59)) ),
                                       onPressed: (){
                                            setState(() {
                                              filteredlistonparameters("", -1);
@@ -370,7 +373,7 @@ class LoadingPage extends StatelessWidget {
                   height: 15.0,
                   color: Color.fromARGB(255, 255, 255, 255), // Loading bar color
                 ),
-              const CircularProgressIndicator(color: Color(0xFF192F59), )
+              const CircularProgressIndicator(color: Color(0xFF00144B), )
               ],
             ),
           ),
