@@ -78,14 +78,14 @@ class _InfoState extends State<Info> {
 
   Widget build(BuildContext context) {
     return  Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.white,
 
       appBar: AppBar(
 
         centerTitle: true,
         title: const Text(
           'Details',
-          style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 255, 255, 255)),
+          style: TextStyle(fontSize: 25, color: Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold,),
         ),
 
         backgroundColor:const   Color(0xFF192F59),
@@ -96,7 +96,7 @@ class _InfoState extends State<Info> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           decoration: BoxDecoration(
-              color: Colors.white60, borderRadius: BorderRadius.circular(20)),
+              color: Colors.white, borderRadius: BorderRadius.circular(20)),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -118,11 +118,11 @@ class _InfoState extends State<Info> {
                         children: <Widget>[
                           Text(
                             "${widget.userDetails.name}",
-                            style:const  TextStyle(fontSize: 22),
+                            style:const  TextStyle(fontSize: 25 ,fontWeight: FontWeight.bold),
                           ), //NAME OF THE PROFFESOR
                           Text(
                             widget.userDetails.designationId.toString(),
-                            style: TextStyle(fontSize: 19, color: Colors.grey),
+                            style: TextStyle(fontSize: 19, color: Colors.black),
                           ), // THEIR POSITION OR POST OR ANY KIND OF DESIGNATION
                           const   SizedBox(
                             height: 10,
@@ -158,7 +158,8 @@ class _InfoState extends State<Info> {
                         const Spacer(),
                         ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(const Color(0xFF349CDC))
+                              backgroundColor: MaterialStatePropertyAll(const Color(
+                                  0xFF00144B))
                           ),
 
                           onPressed: () {
@@ -171,7 +172,7 @@ class _InfoState extends State<Info> {
                     ),
                     subtitle: const Text (
                       "Mobile-1",
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 15),
                     ),
 
                   ),
@@ -202,7 +203,7 @@ class _InfoState extends State<Info> {
                       ),
                       subtitle: Text(
                         "Mobile-2",
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 15),
                       ),
                     )
                 ),
@@ -231,7 +232,7 @@ class _InfoState extends State<Info> {
                       ),
                       subtitle: Text(
                         "Landline(office)",
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 15),
                       ),
                     )
                 ),
@@ -252,7 +253,7 @@ class _InfoState extends State<Info> {
                       ),
                       subtitle: Text(
                         "Landline(residential)",
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 15),
                       ),
                     )
                 ),
@@ -272,7 +273,7 @@ class _InfoState extends State<Info> {
                       ),
                       subtitle: Text(
                         "Site Name",
-                        style: TextStyle(fontSize: 11),
+                        style: TextStyle(fontSize: 15),
                       ),
                     )
                 ),
@@ -291,7 +292,7 @@ class _InfoState extends State<Info> {
                       ),
                       subtitle: Text(
                         "Joining Date",
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 15),
                       ),
                     )
                 ),
@@ -313,7 +314,7 @@ class _InfoState extends State<Info> {
                       ),
                       subtitle: Text(
                         "Department ID",
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 15),
                       ),
                     )
                 ),
@@ -334,7 +335,7 @@ class _InfoState extends State<Info> {
             width: 200,
             //padding: const EdgeInsets.only(top: 2.0,left: 300,right: 25, bottom: 0.0),
             child: const Card(
-              color: Color(0xFF349CDC),
+              color: Color(0xFF00144B),
               child: Row(mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(height: 50,),
