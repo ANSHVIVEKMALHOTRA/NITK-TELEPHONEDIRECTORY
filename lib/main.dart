@@ -13,9 +13,10 @@ class MyApp extends StatelessWidget
   Widget build(BuildContext context)
   {
     return const MaterialApp(
+      //main function to 
       home:SearchMenu() 
-    );
-    
+    );    
+ 
   }
 }
 

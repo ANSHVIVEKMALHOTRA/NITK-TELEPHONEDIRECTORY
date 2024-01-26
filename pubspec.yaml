@@ -41,6 +41,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   swipe_to: ^1.0.5
   dio: ^5.4.0
+  super_bullet_list: ^0.0.3
 
 dev_dependencies:
   flutter_test:
