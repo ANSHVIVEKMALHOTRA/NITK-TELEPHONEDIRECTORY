@@ -2,14 +2,16 @@ import 'package:flutter/services.dart';  //format changes
 import 'package:flutter/material.dart';
 import 'package:swipe_to/swipe_to.dart'; //changes
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:io';
-import 'package:TelephoneDirectory/models/department.dart';
+import 'dart:io'; //
 import 'package:TelephoneDirectory/models/facultyindividual.dart';
 
 class Info extends StatefulWidget {
-
-
-  Info({super.key,required this.userDetails});
+  // Stateful widget is used 
+  Info(
+    { super.key,
+      required this.userDetails}
+      );
+  //Inital value
   facultyindividual userDetails;
 
   // This widget is the root of your application.
@@ -19,21 +21,51 @@ class Info extends StatefulWidget {
 }
 
 class _InfoState extends State<Info> {
+   
+// Function to send the mails
 
-  Future<void>_sendingMails(String? Email) async {
-    var url = Uri.parse("mailto:"+Email!);
+Future<void>_sendingMails(String? Email) async {
+  // if email is not enetered the user then the 
+  // a alert dialog will be shown stating that the email
+  // is not available
+  print(Email);
+if(Email == null || Email == '')
+{
+   showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      title: Text('Sorry'),
+      content: Text('Email not available.'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('OK'),
+        ),
+      ],
+    );
+  },
+);
+}
+ else
+ {
+  var url = Uri.parse("mailto:"+Email);
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
       throw 'Could not launch $url';
     }
+ }
+    
   }
 
+// Function to make a phone call
 
-  Future<void> _makingPhoneCall(String? mobile1) async {
-    String dialUri = "tel:+91$mobile1";
-    if(dialUri != null && dialUri.isNotEmpty)
-    {
+Future<void> _makingPhoneCall(String? mobile1) async {
+
+     String dialUri = "tel:+91$mobile1";  //
       var url = Uri.parse(dialUri);
 
       if (await canLaunchUrl(url)) {
@@ -42,19 +74,35 @@ class _InfoState extends State<Info> {
       } else {
         throw 'Could not launch $url';
       }
-    }
-    else
-    {
-      print("Invalid phonenumber");
-    }
-  }
-
-  @override
+   
+}
+//
   void launchWhatsApp(
       String? phone,
-      String message,
-      ) async {
-    String url() {
+        ) async { //
+if(phone == "null")
+{
+    showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      title: Text('Sorry!'),
+      content: Text('WhatsApp number is not available'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('OK'),
+        ),
+      ],
+    );
+  },
+);
+print("123");
+}
+else{
+   String url() {
       if (Platform.isAndroid) {
         // add the [https]
         return "https://wa.me/+91$phone/?text="; // new line
@@ -69,9 +117,10 @@ class _InfoState extends State<Info> {
     } else {
       throw 'Could not launch ${url()}';
     }
+}
+
+   
   }
-
-
 
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -100,11 +149,18 @@ class _InfoState extends State<Info> {
                 const Padding(padding: EdgeInsets.only(bottom: 20)),
                 Row(
                   children: <Widget>[
+                    widget.userDetails.imageUrl!=null ?
                      CircleAvatar(
                       radius: 60,
-                      backgroundImage: NetworkImage(
+                      backgroundImage: 
+                   NetworkImage(
                          widget.userDetails.imageUrl.toString() ),
-                    ),
+                    ):
+                    CircleAvatar(
+                      radius: 60,
+                    child: Icon(Icons.person,size: 45),
+                    )
+                    ,
                     const  Padding(padding: EdgeInsets.only(left: 20)),
                     Container(
                       width: MediaQuery.of(context).size.width - 200,
@@ -336,7 +392,7 @@ class _InfoState extends State<Info> {
             ),
           ),
           onLeftSwipe: (detail) {
-            launchWhatsApp(widget.userDetails.mobile1.toString(), 'hello');// THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
+            launchWhatsApp(widget.userDetails.mobile1.toString());// THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
           },
           iconOnLeftSwipe: Icons.message,
           iconOnRightSwipe: Icons.email_outlined,
@@ -345,14 +401,11 @@ class _InfoState extends State<Info> {
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat
-//some changes
+//
     );
   }
 }
-//s
-//chnages
-
-//added a ico tile
+//
 class IconTile extends StatelessWidget {
   final String? imgAssetPath;
   final Color? backColor;
