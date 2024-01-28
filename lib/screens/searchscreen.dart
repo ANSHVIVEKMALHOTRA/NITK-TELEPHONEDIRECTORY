@@ -33,6 +33,7 @@ var topictext=TextEditingController();
 bool isapicall=false;
 bool isdepartment=false;
 List<facultyindividual> filteredlist=[];
+List<department> fetcheddepartments=[];
 String name="";
 int _dropdownvalue=-1;
 
@@ -61,6 +62,10 @@ Future<void> _fetchdepartments() async
      {
          alldepartments.add(department.fromJson(i));
      }    //
+     //once the data is obtained inset
+     setState(() {
+       fetcheddepartments.addAll(alldepartments);
+     });
   }
     else
   {
@@ -105,10 +110,7 @@ else
  }
 
 allindividuals.sort();   // the list os sorted acccordingly so that the data is displayed in alphabetical order
-
-// the department details are fetched in here
-await _fetchdepartments();
-
+//
 }
 
 // Function to sort the elements based on the list 
@@ -175,12 +177,20 @@ void initState()
   // once the data is fetched its stored in the filtered list
   // which will be used to show the details
   filteredlist=allindividuals;
+  //fetch all the department details from the database
+   _fetchdepartments();
   super.initState();
   }
 
   @override
   Widget build(BuildContext context)
   {
+ List<DropdownMenuItem> values=[
+   DropdownMenuItem( value:-1, 
+                                                                              child: Text("Select the section"),
+                                                                              ),
+ ];
+
   Widget content = isapicall ?           //content will store the widget to be displayed based on the condition whether data is fetched or not
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,18 +244,31 @@ void initState()
                                       const SizedBox(width: 11,),
                                       Expanded(
                                            child: Container(
-                                                     padding: EdgeInsets.all(2),
+                                                     padding: EdgeInsets.all(6),
                                                      child: DropdownButton( 
-
+                                                      alignment: Alignment.center,
+                                                      itemHeight: 60,
                                                       isExpanded: true,
                                                       iconSize: 35,
-                                                      borderRadius: BorderRadius.all(Radius.circular(7)),
+                                                      
+                                                      borderRadius: BorderRadius.all(Radius.circular(11)),
                                                       hint: const Text("Select the section"),
                                                       elevation: 8,
-                                                      items: const [
+                                                      items: [
+                                                         DropdownMenuItem( value:-1, 
+                                                                              child: Text("Select the section"),
+                                                                              ),
+                                                        ...fetcheddepartments.map((e){
+                                                                                return DropdownMenuItem( value:e.id, child: Text(e.name.toString()),);
+                                                                              }).toList(),
+                                                                              ]
+                                                      
+                                                      
+                                                          /* const [
                                                             DropdownMenuItem( value:-1, 
                                                                               child: Text("Select the section"),
                                                                               ),
+                                                                              
                                                             DropdownMenuItem( value:1, child: Text("Computer Science"),),
                                                             DropdownMenuItem( value: 2 ,child: Text("Civil"),),
                                                             DropdownMenuItem( value: 3 ,child: Text("Information Technology"),),
@@ -262,7 +285,9 @@ void initState()
                                                             DropdownMenuItem( value: 16 ,child: Text("School of Humanitics, Social Sciences, \n and Management")),
                                                             DropdownMenuItem( value: 17 ,child: Text("CDC"),),
                                                             DropdownMenuItem( value: 18 ,child: Text("Central Library"),),
-                                                                 ] ,
+                                                            DropdownMenuItem( value: 21 ,child: Text("Deans"),),
+                                                            DropdownMenuItem( value: 24 ,child: Text("Resident Engineers"),),
+                                                                 ] ,*/,
                                                        value: _dropdownvalue,
                                                        onChanged:
                                                             (newvalue)
@@ -347,13 +372,14 @@ void initState()
                                                                                                  overflow: TextOverflow.fade ,
                                                                                                  maxLines: 1,
                                                                                                  style: const TextStyle(
-                                                                                                                 color: Colors.white,
-                                                                                                                 fontSize: 15                          
+                                                                                                                 color:  const Color(0xFF192F59),
+                                                                                                                 fontSize: 16,
+                                                                                                                 fontWeight: FontWeight.bold                          
                                                                                                                        )
                                                                                                                       ),                   
                                                                                       Text("Office: ${filteredlist[index].landlineOfficeIntercom.toString()}", 
                                                                                              style:const TextStyle(
-                                                                                                          color: Colors.white,fontSize: 12,
+                                                                                                          color: const Color(0xFF192F59),fontSize: 11,
                                                                                                                 )
                                                                                                               ),
                                                                                                             ],
@@ -361,12 +387,21 @@ void initState()
                                                                                                       ),
                                                                                                   ],
                                                                                                 ),
-                                                                              tileColor: const Color(0xFF192F59),
+                                                                           //   tileColor: const Color(0xFF192F59),
                                                                               onTap: (){
-                                                                                  Navigator.push(
+                                                                                     String depart="";
+                                                                                     for(department d in fetcheddepartments)
+                                                                                     {
+                                                                                      if(d.id == filteredlist[index].departmentId)
+                                                                                      {
+                                                                                        depart = d.name!;
+                                                                                      }
+                                                                                     }
+                                                                                     Navigator.push(
                                                                                      context, MaterialPageRoute(
                                                                                                builder: (context) =>Info(
-                                                                                                         userDetails: filteredlist[index]    
+                                                                                                         department: depart,
+                                                                                                         userDetails: filteredlist[index],  
                                                                                                               )
                                                                                                             )
                                                                                                          ,);
@@ -392,6 +427,7 @@ void initState()
                                 color: Colors.white,
                                   ),
                               onPressed: () {
+                                print(alldepartments.length.toString());
                                 showDialog(
                                   context: context,
                                   builder: (context) {
@@ -424,9 +460,16 @@ void initState()
                                                       Text('Filter Option helps you to search person by his/her Department'),
                                                       Text('In the details pane You will get all the required Information about the person'),
                                                       Text('At the bottom you will find a floating button which on sliding left will redirect you to WhatsApp and sliding right to the mail of the person'),
+                                                      
                                                     ],
                                                    ),
                                                 ),
+                                                Spacer(),
+                                                OutlinedButton(onPressed: (){
+                                                  Navigator.of(context).pop();
+                                                       }, 
+                                                      child: Text("Close",style: TextStyle(color: Colors.black),)),
+                                                      const SizedBox(height: 7,)
                                               ],
                                             ),
                                           ),
