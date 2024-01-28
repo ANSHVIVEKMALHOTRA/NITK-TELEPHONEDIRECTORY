@@ -170,16 +170,29 @@ Widget build(BuildContext context) {
                             color: Colors.white,
                             child: Row(
                                children: <Widget>[
-                                const SizedBox(width: 7,),
+                                const SizedBox(width: 11,),
                                        widget.userDetails.imageUrl!=null ?
                                      //if image is already available then show the image
-                                       CircleAvatar(
+                                   /*    CircleAvatar(
                                           radius: 60,
                                           backgroundImage: 
                                                 NetworkImage(
                                                         widget.userDetails.imageUrl.toString()
                                                          ),
-                                                      ):
+                                                      ):*/
+                                                      Container(
+                                                     width: 110.0,
+                                                     height: 130.0,
+                                                     decoration: BoxDecoration(
+                                                               shape: BoxShape.rectangle,
+                                                               border: Border.all(color: const Color.fromARGB(255, 214, 214, 214) ,width: 2 ),
+                                                              borderRadius: BorderRadius.circular(10.0), // Optional rounded corners
+                                                              image: DecorationImage(
+                                                              image: NetworkImage(widget.userDetails.imageUrl.toString()),
+                                                              fit: BoxFit.fill,
+                                                                       ),
+                                                                    ),
+                                                           ):
                                       // if image is missing then show a icon                
                                       CircleAvatar(
                                              radius: 60,
@@ -211,14 +224,14 @@ Widget build(BuildContext context) {
                                       ],
                                ),
                           ),
-                 Padding(
+              /*   Padding(
                   padding: const EdgeInsets.symmetric(),
                   child: Container(
-                    height: 2.0,
+                    height: 3.0,
                     width: 1300.0,
                     color: const Color(0xFF192F59),
                   ),
-                ),//
+                ),*///
                
                //if condition is used to display the button only if the number is available
                 if(widget.userDetails.mobile1!=null)
@@ -270,19 +283,20 @@ Widget build(BuildContext context) {
                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                            ),
                           const Spacer(),
-                          ElevatedButton(
-                            style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF00144B))),
-                            onPressed: () {
-                              _makingPhoneCall(widget.userDetails.mobile2.toString()); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
-                             },
-                            child:const  Icon(Icons.call,color: Colors.white),
-                          ),
+                         
                         ],
                       ),
                       subtitle: Text(
                            "Mobile-2",
                             style: TextStyle(fontSize: 15),
                            ),
+                      trailing:  ElevatedButton(
+                            style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF00144B))),
+                            onPressed: () {
+                              _makingPhoneCall(widget.userDetails.mobile2.toString()); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
+                             },
+                            child:const  Icon(Icons.call,color: Colors.white),
+                          ),
                         )
                     ),
 
@@ -294,16 +308,12 @@ Widget build(BuildContext context) {
                       minLeadingWidth: 20,
                       leading: const Icon(Icons.call),
                       title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                  //      mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Text(
-                              "${widget.userDetails.landlineOfficeIntercom}",
+                           Text("${widget.userDetails.landlineOfficeIntercom}",
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          const Spacer(),
-                          
+                          const Spacer()
                         ],
                       ),
                       subtitle: Text(
@@ -407,10 +417,10 @@ Widget build(BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.arrow_back,color: Colors.white, size: 20,),
-                      Text("WhatsApp ", style: TextStyle(color: Colors.white),), //
+                      Text(" WhatsApp ", style: TextStyle(color: Colors.white,fontSize: 15),), //
                       Divider( thickness: 2, color: Colors.black, indent: 10,),
                       Icon(Icons.mail_outline_rounded, color: Colors.white, size: 20,),
-                      Text(" Mail",style: TextStyle(color: Colors.white),),
+                      Text(" Mail ",style: TextStyle(color: Colors.white,fontSize: 15),),
                       Icon(Icons.arrow_forward,color: Colors.white, size: 20,),
                      ], //
                   ),
