@@ -189,14 +189,7 @@ Widget build(BuildContext context) {
                                children: <Widget>[
                                 const SizedBox(width: 11,),
                                        widget.userDetails.imageUrl!=null ?
-                                     //if image is already available then show the image
-                                   /*    CircleAvatar(
-                                          radius: 60,
-                                          backgroundImage: 
-                                                NetworkImage(
-                                                        widget.userDetails.imageUrl.toString()
-                                                         ),
-                                                      ):*/
+                                       //
                                                       Container(
                                                      width: 110.0,
                                                      height: 130.0,
@@ -217,7 +210,7 @@ Widget build(BuildContext context) {
                                                  ),
                                       const  Padding(padding: EdgeInsets.only(left: 20)),
                                       Container(
-                                          width: MediaQuery.of(context).size.width - 220,
+                                          width: MediaQuery.of(context).size.width - 200,
                                           height: 150,
                                          child: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,               
@@ -238,7 +231,8 @@ Widget build(BuildContext context) {
                                                                 const  SizedBox(
                                                                  height: 3, //
                                                                 ),
-                                                                Text(widget.department),
+                                                                widget.department!.length <= 50?
+                                                                Text(widget.department): Text(widget.department,style: TextStyle(fontSize: 12),),
 
                                                           ],
                                                    ),
@@ -246,16 +240,7 @@ Widget build(BuildContext context) {
                                       ],
                                ),
                           ),
-              /*   Padding(
-                  padding: const EdgeInsets.symmetric(),
-                  child: Container(
-                    height: 3.0,
-                    width: 1300.0,
-                    color: const Color(0xFF192F59),
-                  ),
-                ),*///
-               
-               //if condition is used to display the button only if the number is available
+//
                 if(widget.userDetails.mobile1!=null)
                   Card(
                     color: Colors.white,
