@@ -1,3 +1,4 @@
+import 'package:TelephoneDirectory/models/designation.dart';
 import 'package:super_bullet_list/bullet_list.dart';
 import 'dart:convert';    //
 import 'package:flutter/material.dart';//
@@ -9,8 +10,9 @@ import 'package:TelephoneDirectory/models/department.dart';  //
 //Global values to be used in the screen
 List<facultyindividual> allindividuals=[];
 List<department> alldepartments=[]; //
+List<designation> designs = [];
 String name="";
-int _dropdownvalue=-1;
+//int _dropdownvalue=-1;
 
 class SearchMenu extends StatefulWidget
 {
@@ -34,6 +36,7 @@ bool isapicall=false;
 bool isdepartment=false;
 List<facultyindividual> filteredlist=[];
 List<department> fetcheddepartments=[];
+List<designation> fetchdesignatrion=[];
 String name="";
 int _dropdownvalue=-1;
 
@@ -72,6 +75,41 @@ Future<void> _fetchdepartments() async
      print('Failed to load');
   }
 }
+
+
+
+Future<void> _fetchdesignation() async
+{
+  
+  // The url is made form the URI so that it can be used to make the 
+  // get request, thus fetch the required data accordingly
+
+  final url=Uri.parse("http://telephone.nitk.ac.in/api/v1/designations");
+  final response = await http.get(url).timeout(Duration(seconds: 30));
+  
+  final data= jsonDecode(response.body);
+
+  // If the status code is 2000 implies thata the data is 
+  // successfully fetched form the net, thus we format the data 
+  // accordingly, so that the images are shown as we wish
+
+  if(response.statusCode ==200)
+  {
+     for(final i in data)
+     {
+         fetchdesignatrion.add(designation.fromJson(i));
+     }    //
+     //once the data is obtained inset
+     setState(() {
+       designs.addAll(fetchdesignatrion);
+     });
+  }
+    else
+  {
+     print('Failed to load');
+  }
+}
+
 
 //function to fetch the data of the individual faculties
 
@@ -179,16 +217,24 @@ void initState()
   filteredlist=allindividuals;
   //fetch all the department details from the database
    _fetchdepartments();
+   _fetchdesignation();
   super.initState();
   }
 
   @override
   Widget build(BuildContext context)
   {
+
+//code to show the values in alphabetical order
+
+fetcheddepartments.sort((a, b) {
+ return a.name!.compareTo(b.name!);
+},); 
+
  List<DropdownMenuItem> values=[
    DropdownMenuItem( value:-1, 
-                                                                              child: Text("Select the section"),
-                                                                              ),
+                     child: Text("Select the section"),
+          ),
  ];
 
   Widget content = isapicall ?           //content will store the widget to be displayed based on the condition whether data is fetched or not
@@ -254,6 +300,7 @@ void initState()
                                                       borderRadius: BorderRadius.all(Radius.circular(11)),
                                                       hint: const Text("Select the section"),
                                                       elevation: 8,
+                                                      
                                                       items: [
                                                          DropdownMenuItem( value:-1, 
                                                                               child: Text("Select the section"),
@@ -261,33 +308,7 @@ void initState()
                                                         ...fetcheddepartments.map((e){
                                                                                 return DropdownMenuItem( value:e.id, child: Text(e.name.toString()),);
                                                                               }).toList(),
-                                                                              ]
-                                                      
-                                                      
-                                                          /* const [
-                                                            DropdownMenuItem( value:-1, 
-                                                                              child: Text("Select the section"),
-                                                                              ),
-                                                                              
-                                                            DropdownMenuItem( value:1, child: Text("Computer Science"),),
-                                                            DropdownMenuItem( value: 2 ,child: Text("Civil"),),
-                                                            DropdownMenuItem( value: 3 ,child: Text("Information Technology"),),
-                                                            DropdownMenuItem( value: 6 ,child: Text("Water resources and Ocean Eng"),),
-                                                            DropdownMenuItem( value: 7 ,child: Text("Chemical"),),
-                                                            DropdownMenuItem( value: 8 ,child: Text("Chemistry"),),
-                                                            DropdownMenuItem( value: 9 ,child: Text("Electrical and Electronics"),),
-                                                            DropdownMenuItem( value: 10 ,child: Text("Electrical and Communication"),),
-                                                            DropdownMenuItem( value: 11 ,child: Text("MACS"),),
-                                                            DropdownMenuItem( value: 12 ,child: Text("Mechanical Engineering"),),
-                                                            DropdownMenuItem( value: 13 ,child: Text("Metallurgical and Materials Engineering"),),
-                                                            DropdownMenuItem( value: 14 ,child: Text("Mining"),),
-                                                            DropdownMenuItem( value: 15 ,child: Text("Physics"),),
-                                                            DropdownMenuItem( value: 16 ,child: Text("School of Humanitics, Social Sciences, \n and Management")),
-                                                            DropdownMenuItem( value: 17 ,child: Text("CDC"),),
-                                                            DropdownMenuItem( value: 18 ,child: Text("Central Library"),),
-                                                            DropdownMenuItem( value: 21 ,child: Text("Deans"),),
-                                                            DropdownMenuItem( value: 24 ,child: Text("Resident Engineers"),),
-                                                                 ] ,*/,
+                                                                              ],
                                                        value: _dropdownvalue,
                                                        onChanged:
                                                             (newvalue)
@@ -311,8 +332,9 @@ void initState()
                                                     )
                                                   ),
                                   onPressed: (){
+                                    filteredlistonparameters("", -1);
                                            setState(() {
-                                              filteredlistonparameters("", -1);
+                                              name="";
                                               _dropdownvalue=-1;
                                               nametext.text="";
                                                   });    
@@ -395,23 +417,33 @@ void initState()
                                                                                       if(d.id == filteredlist[index].departmentId)
                                                                                       {
                                                                                         depart = d.name!;
+                                                                                        break;
                                                                                       }
                                                                                      }
+                                                                                      String _designation="";
+                                                                                      for(designation i in designs)
+                                                                                      {
+                                                                                         if(i.id == filteredlist[index].designationId )
+                                                                                         {
+                                                                                          _designation=i.title!;
+                                                                                         } 
+                                                                                      }
                                                                                      Navigator.push(
                                                                                      context, MaterialPageRoute(
                                                                                                builder: (context) =>Info(
                                                                                                          department: depart,
-                                                                                                         userDetails: filteredlist[index],  
-                                                                                                              )
-                                                                                                            )
-                                                                                                         ,);
+                                                                                                         userDetails: filteredlist[index],
+                                                                                                         designation: _designation,  
+                                                                                                               )
+                                                                                                             )
+                                                                                                          ,);
                                                                                                         },
                                                                                                       ) 
                                                                                                    ,);
                                                                                                  }, 
+                                                                                              ),
                                                                                             ),
-                                                                                          ),
-                                                                                        )
+                                                                                         )
                                                                                       ],
                                                                               ): LoadingPage();
   

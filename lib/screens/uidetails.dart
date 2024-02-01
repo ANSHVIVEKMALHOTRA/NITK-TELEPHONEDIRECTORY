@@ -10,11 +10,13 @@ class Info extends StatefulWidget {
      {
       super.key,
       required this.userDetails,
-      required this.department
+      required this.department,
+      required this.designation
       }
       );
   //Inital value
   final String department;
+  final String designation;
   final facultyindividual userDetails;
   // This widget is the root of your application.
   @override
@@ -81,6 +83,21 @@ if(Email == null || Email == '')
 Future<void> _makingPhoneCall(String? mobile1) async {
 
      String dialUri = "tel:+91$mobile1";  //
+      var url = Uri.parse(dialUri);
+
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+   
+}
+
+// Function to make a telephone phone call
+
+Future<void> _makingPhoneCalltele(String? mobile1) async {
+
+     String dialUri = "tel:$mobile1";  //
       var url = Uri.parse(dialUri);
 
       if (await canLaunchUrl(url)) {
@@ -206,18 +223,23 @@ Widget build(BuildContext context) {
                                                   mainAxisAlignment: MainAxisAlignment.center,               
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                                 Flexible(
-                                                                   child: Text(
+                                                                  Text(
                                                                     "${widget.userDetails.name}",
-                                                                      style:const  TextStyle(fontSize: 21 ,
+                                                                      style:const  TextStyle(fontSize: 19 ,
                                                                                              fontWeight: FontWeight.bold
                                                                                   ),
                                                                           ),
-                                                                 ),
+                                                                
                                                                  const  SizedBox(
-                                                                 height: 10, //
+                                                                 height: 3, //
                                                                 ),
-                                                                Text(widget.department)
+                                                                widget.designation!= "Other" && widget.designation != "Director" && widget.designation != "Registrar" ?
+                                                                Text(widget.designation):SizedBox(height: 1,),
+                                                                const  SizedBox(
+                                                                 height: 3, //
+                                                                ),
+                                                                Text(widget.department),
+
                                                           ],
                                                    ),
                                             )
@@ -301,7 +323,7 @@ Widget build(BuildContext context) {
                     ),
 
                 // condition to check whether the landlineofficeIntercom number is present or not
-                if( widget.userDetails.landlineOfficeIntercom!=null )
+                if( widget.userDetails.landlineOfficeIntercom!=null && widget.userDetails.landlineOfficeIntercom!.length<=15)
                 Card(
                   color: Colors.white,
                      child: ListTile(
@@ -323,7 +345,7 @@ Widget build(BuildContext context) {
                       trailing:ElevatedButton(
                             style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF00144B))),
                             onPressed: () {
-                              _makingPhoneCall(widget.userDetails.landlineOfficeIntercom.toString()); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
+                              _makingPhoneCalltele(widget.userDetails.landlineOfficeIntercom.toString()); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
                             },
                             child:const  Icon(Icons.call,color: Colors.white,),
                           ) ,
@@ -347,6 +369,27 @@ Widget build(BuildContext context) {
                       ),
                       subtitle: Text(
                         "Landline(residential)",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    )
+                ),
+                if(widget.userDetails.email!=null && widget.userDetails.email!.length <= 35)
+                  Card(
+                    color: Colors.white,
+                    child: ListTile(
+                      minLeadingWidth: 20,
+                      leading: const Icon(Icons.mail),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${widget.userDetails.email}",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      subtitle: Text(
+                        "Email",
                         style: TextStyle(fontSize: 15),
                       ),
                     )
