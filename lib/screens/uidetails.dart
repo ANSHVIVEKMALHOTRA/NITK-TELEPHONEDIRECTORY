@@ -357,25 +357,27 @@ Widget build(BuildContext context) {
                         style: TextStyle(fontSize: 15),
                       ),
                     )
-                ),
+                 ),
                 if(widget.userDetails.email!=null && widget.userDetails.email!.length <= 35)
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      minLeadingWidth: 20,
-                      leading: const Icon(Icons.mail),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${widget.userDetails.email}",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      subtitle: Text(
-                        "Email",
-                        style: TextStyle(fontSize: 15),
+                 Card(   
+                  color: Colors.white,                         //card one
+                    child: InkWell(
+                      onTap: () {
+                      _sendingMails(widget.userDetails.email);
+                        },
+                      child: ListTile(
+                        minLeadingWidth: 20,
+                        leading: const Icon(Icons.web_asset_outlined),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(child:Text(
+                              "Email",
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ) )
+                            ,
+                          ],
+                        ),
                       ),
                     )
                 ),
@@ -401,31 +403,8 @@ Widget build(BuildContext context) {
                         ),
                       ),
                     )
-                ),
-                if( widget.userDetails.joiningDate !=null)
-                Card(  
-                  color: Colors.white,                                       //card2//
-                    child: ListTile(
-                      minLeadingWidth: 20,
-                      leading: const Icon(Icons.date_range),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${widget.userDetails.joiningDate}",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      subtitle: Text(
-                        "Joining Date",
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    )
-                ),  //
-               SizedBox(
-                  height: 80,
-                )
+                ),//
+                //
 
               ]
           ),
@@ -434,8 +413,10 @@ Widget build(BuildContext context) {
         floatingActionButton:
         SwipeTo(
           child: Container(
-            width: 230,
+            
+            width: 240,
             child: const Card(
+              shape:RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(21))),
               color: Color(0xFF00144B),
               child: Row(mainAxisAlignment: MainAxisAlignment.center,
                 children: [

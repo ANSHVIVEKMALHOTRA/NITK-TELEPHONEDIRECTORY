@@ -187,11 +187,19 @@ setState(()
                      && 
           element.departmentId==departmentid;
         }
+
 }
 return false;
 }
    ).toList();
-  }
+
+if(name!="" || departmentid != -1)
+{
+  filteredlist.sort((a, b) {
+     return a.customOrder!.compareTo(b.customOrder!);
+   },);
+}   
+}
 );
  
 }
@@ -459,21 +467,26 @@ fetcheddepartments.sort((a, b) {
                                 color: Colors.white,
                                   ),
                               onPressed: () {
-                                print(alldepartments.length.toString());
+                               // print(alldepartments.length.toString());
                                 showDialog(
                                   context: context,
                                   builder: (context) {
                                     return Dialog(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                                   //   backgroundColor: Colors.white,
                                       elevation: 16,
                                       child: Container(
+                                              //color: Colors.white,
+                                             decoration: BoxDecoration(
+                                              color:Colors.white,
+                                              borderRadius: BorderRadius.all(Radius.circular(15))),
                                               child: Column(
                                                    mainAxisAlignment: MainAxisAlignment.start,
                                                    crossAxisAlignment: CrossAxisAlignment.center,
                                                    children: [
                                                              Padding(padding: EdgeInsetsDirectional.symmetric(
-                                                                                          horizontal: 10,
-                                                                                          vertical: 10
+                                                                                          horizontal: 15,
+                                                                                          vertical: 15
                                                                                           )
                                                                                         ),
                                                             Text('HOW TO USE:'),
@@ -488,11 +501,11 @@ fetcheddepartments.sort((a, b) {
                                                   child: SuperBulletList(
                                                     isOrdered: true,
                                                     items: [
-                                                      Text('On the Home screen you will find a Search option, Which you can directly use to search a particular person',style: TextStyle(fontSize: 14)),
-                                                      Text('Filter Option helps you to search person by his/her Department'),
-                                                      Text('In the details pane You will get all the required Information about the person'),
-                                                      Text('At the bottom you will find a floating button which on sliding left will redirect you to WhatsApp and sliding right to the mail of the person'),
-                                                      
+                                                      Text("In the app's Home screen, tap the Search bar and type the name of the person you want to contact.",style: TextStyle(fontSize: 14)),
+                                                      Text('Filter Option helps you to search person by his/her corresponding Department/Section.'),
+                                                      Text('In the details pane, you will get all the required contact information about the person. '),
+                                                      Text('At the bottom of the detail screen you will find a floating button which on sliding left will redirect you to WhatsApp and on sliding right to the mail of the person.'),
+                                                      Text('We hope you find this app useful.')
                                                     ],
                                                    ),
                                                 ),
@@ -501,7 +514,9 @@ fetcheddepartments.sort((a, b) {
                                                   Navigator.of(context).pop();
                                                        }, 
                                                       child: Text("Close",style: TextStyle(color: Colors.black),)),
-                                                      const SizedBox(height: 7,)
+                                                      const SizedBox(height: 9,),
+                                                      Text("Copyright All Rights Reserved 2024 @NITK Surathkal",style: TextStyle(fontSize: 9,fontWeight: FontWeight.bold),),
+                                                      const SizedBox(height: 12,)
                                               ],
                                             ),
                                           ),
