@@ -1,6 +1,6 @@
 flutter_icons:
   android: "launcher_icon"  # Name of the icon asset
   ios: true
-  image_path: "assets/logonitk.png"  # Path to your icon image
-  adaptive_icon_foreground: "assets/finallogo.png"
+  image_path: "assets/finallogo1.jpg"  # Path to your icon image
+  adaptive_icon_foreground: "assets/finallogo1.jpg"
   adaptive_icon_background: "#ffffff"

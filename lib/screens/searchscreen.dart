@@ -381,7 +381,7 @@ fetcheddepartments.sort((a, b) {
                                                                                            ),
                                                                                          ) : CircleAvatar(
                                                                                                  backgroundColor: Colors.white, 
-                                                                                                 radius: 22.0, // Set the radius of the circle
+                                                                                                 radius: 24.0, // Set the radius of the circle
                                                                                                  child: Icon(
                                                                                                   Icons.person,
                                                                                                   color: Colors.black

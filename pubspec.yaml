@@ -52,8 +52,8 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/logonitk.png"
-  adaptive_icon_foreground: "assets/finallogo.png"
+  image_path: "aassets/finallogo1.jpg"
+  adaptive_icon_foreground: "assets/finallogo1.jpg"
   adaptive_icon_background: "#ffffff"
 
   # The "flutter_lints" package below contains a set of recommended lints to

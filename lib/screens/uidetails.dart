@@ -257,10 +257,10 @@ Widget build(BuildContext context) {
                                        const Spacer(),
                                       ],
                     ),
-                    subtitle: const Text (
-                      "Mobile-1",
-                      style: TextStyle(fontSize: 15),
-                    ),
+                    // subtitle: const Text (
+                    //   "Mobile-1",
+                    //   style: TextStyle(fontSize: 15),
+                    // ),
                     trailing:  ElevatedButton(
                                          style: ButtonStyle(
                                          backgroundColor: MaterialStatePropertyAll(const Color(0xFF00144B)
@@ -287,16 +287,16 @@ Widget build(BuildContext context) {
                         children: [
                           Text(
                             "${widget.userDetails.mobile2}",
-                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                             style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                            ),
                           const Spacer(),
                          
                         ],
                       ),
-                      subtitle: Text(
-                           "Mobile-2",
-                            style: TextStyle(fontSize: 15),
-                           ),
+                      // subtitle: Text(
+                      //      "Mobile-2",
+                      //       style: TextStyle(fontSize: 15),
+                      //      ),
                       trailing:  ElevatedButton(
                             style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF00144B))),
                             onPressed: () {
@@ -318,15 +318,15 @@ Widget build(BuildContext context) {
                   //      mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                            Text("${widget.userDetails.landlineOfficeIntercom}",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                             ),
                           const Spacer()
                         ],
                       ),
-                      subtitle: Text(
-                        "Landline(office)",
-                        style: TextStyle(fontSize: 15),
-                      ),
+                      // subtitle: Text(
+                      //   "Landline(office)",
+                      //   style: TextStyle(fontSize: 15),
+                      // ),
                       trailing:ElevatedButton(
                             style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF00144B))),
                             onPressed: () {
@@ -348,14 +348,14 @@ Widget build(BuildContext context) {
                         children: [
                           Text(
                             "${widget.userDetails.landlineResidential}",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
-                      subtitle: Text(
-                        "Landline(residential)",
-                        style: TextStyle(fontSize: 15),
-                      ),
+                      // subtitle: Text(
+                      //   "Landline(residential)",
+                      //   style: TextStyle(fontSize: 15),
+                      // ),
                     )
                  ),
                 if(widget.userDetails.email!=null && widget.userDetails.email!.length <= 35)
@@ -367,13 +367,13 @@ Widget build(BuildContext context) {
                         },
                       child: ListTile(
                         minLeadingWidth: 20,
-                        leading: const Icon(Icons.web_asset_outlined),
+                        leading: const Icon(Icons.mail_outlined),
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(child:Text(
-                              "Email",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              widget.userDetails.email!,
+                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                             ) )
                             ,
                           ],
@@ -396,7 +396,7 @@ Widget build(BuildContext context) {
                           children: [
                             Expanded(child:Text(
                               "Website",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                             ) )
                             ,
                           ],
