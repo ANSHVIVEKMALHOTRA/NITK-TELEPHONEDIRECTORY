@@ -1,4 +1,4 @@
-package com.example.dummyapp
+package com.nitktelephonedirectory.TelephoneDirectory
 
 import io.flutter.embedding.android.FlutterActivity
 
