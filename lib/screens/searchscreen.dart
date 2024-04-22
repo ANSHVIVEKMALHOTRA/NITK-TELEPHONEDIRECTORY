@@ -144,7 +144,7 @@ final data= jsonDecode(response.body);
  } //
 else
  {
-  print('Failed to load the API call that ypu were mKINGGGG');
+  print('Failed to load the API call that you were making.');
  }
 
 allindividuals.sort();   // the list os sorted acccordingly so that the data is displayed in alphabetical order
@@ -195,10 +195,41 @@ return false;
 
 if(name!="" || departmentid != -1)
 {
+
+  /*
   filteredlist.sort((a, b) {
-     return a.customOrder!.compareTo(b.customOrder!);
+    
+     return /* a.customOrder==b.customOrder ?
+             a.joiningDate==b.joiningDate ?
+             a.name!.compareTo(b.name!) : a.joiningDate!.compareTo(b.joiningDate!):  */
+      a.customOrder!.compareTo(b.customOrder!);
    },);
-}   
+*/
+
+
+
+filteredlist.sort((a, b) {
+    // Compare based on custom order
+    if (a.customOrder != b.customOrder) {
+      return a.customOrder!.compareTo(b.customOrder!);
+    } else {
+      // If custom orders are the same, compare based on joining date
+      if (a.joiningDate != null && b.joiningDate != null) {
+        return a.joiningDate!.compareTo(b.joiningDate!);
+      } else if (a.joiningDate == null && b.joiningDate == null) {
+        // If joining dates are null for both, compare based on name
+        return a.name!.compareTo(b.name!);
+      } else if (a.joiningDate == null) {
+        // Handle case when joining date of a is null
+        return 1; // a comes after b
+      } else {
+        // Handle case when joining date of b is null
+        return -1; // a comes before b
+      }
+    }
+  });
+}
+
 }
 );
  
@@ -457,9 +488,18 @@ fetcheddepartments.sort((a, b) {
   
    return Scaffold(
        appBar: AppBar(
-                       title: const Text("Telephone Directory",style: TextStyle(color: Colors.white),),
+                       title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                         children: [Image.asset(
+                        'assets/justlogo.png',
+                       width: 42,
+                       height: 42, // Adjust the fit of the image
+                      ),
+                      SizedBox(width: 7,),
+                       Text("Telephone Directory",style: TextStyle(fontSize: 22, color: Colors.white),),]),
                        backgroundColor: const Color(0xFF192F59),
                        centerTitle: true,
+                      /*
                        actions: <Widget> [
                           IconButton(
                               icon: Icon(
@@ -525,7 +565,7 @@ fetcheddepartments.sort((a, b) {
                                  );
                               },
                           )
-                       ],
+                       ], */
                   ),
              body: content,              
         );

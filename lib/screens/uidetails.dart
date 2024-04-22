@@ -155,6 +155,7 @@ else {
 }
 
 Widget build(BuildContext context) {
+   String phonenumber = widget.userDetails.landlineOfficeIntercom!.replaceAll(RegExp(r'\s+'), '');
     return  Scaffold(
       backgroundColor:  Color.fromARGB(255, 235, 235, 235),
       appBar: AppBar(  
@@ -226,7 +227,7 @@ Widget build(BuildContext context) {
                                                                  const  SizedBox(
                                                                  height: 3, //
                                                                 ),
-                                                                widget.designation!= "Other" && widget.designation != "Director" && widget.designation != "Registrar" ?
+                                                                widget.designation!= "Other" && widget.designation != "Director" && widget.designation != "Registrar" && widget.designation != "-NA-"?
                                                                 Text(widget.designation):SizedBox(height: 1,),
                                                                 const  SizedBox(
                                                                  height: 3, //
@@ -308,7 +309,7 @@ Widget build(BuildContext context) {
                     ),
 
                 // condition to check whether the landlineofficeIntercom number is present or not
-                if( widget.userDetails.landlineOfficeIntercom!=null && widget.userDetails.landlineOfficeIntercom!.length<=15)
+                if( widget.userDetails.landlineOfficeIntercom!=null && widget.userDetails.landlineOfficeIntercom!.length<=12)
                 Card(
                   color: Colors.white,
                      child: ListTile(
@@ -336,6 +337,81 @@ Widget build(BuildContext context) {
                           ) ,
                     )
                 ),
+
+
+
+      // if the length of the intercom is more than 15 implies that there are 2 numbers and it requires for us to
+      // use the two number separately
+                if( widget.userDetails.landlineOfficeIntercom!=null && widget.userDetails.landlineOfficeIntercom!.length>13)
+                Card(
+                  color: Colors.white,
+                     child: Column(
+                       children: [
+                         ListTile(
+                          minLeadingWidth: 20,
+                          leading: const Icon(Icons.call),
+                          title: Row(
+                                           //      mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                               Text("${phonenumber.substring(0,12)}",
+                                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                ),
+                              const Spacer()
+                            ],
+                          ),
+                          // subtitle: Text(
+                          //   "Landline(office)",
+                          //   style: TextStyle(fontSize: 15),
+                          // ),
+                          trailing:ElevatedButton(
+                                style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF00144B))),
+                                onPressed: () {
+                                  _makingPhoneCalltele(phonenumber.substring(0,12)); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
+                                },
+                                child:const  Icon(Icons.call,color: Colors.white,),
+                              ) ,
+                                             ),
+
+                                             //2nd number
+                              ListTile(
+                          minLeadingWidth: 20,
+                          leading: const Icon(Icons.call),
+                          title: Row(
+                                           //      mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              // Some phone number have a have comibination of
+                              // two number without having a 0824 in the
+                              // 2nd number, thus we fromat it accordingly
+                              
+                                if(phonenumber.length <=22)
+                                Text("0824-${phonenumber.substring(13)}",
+                                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                ),
+                              // now when 
+                                if(phonenumber.length >22)
+                                Text("${phonenumber.substring(13)}",
+                                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                ),
+                              const Spacer()
+                            ],
+                          ),
+                          trailing:ElevatedButton(
+                                style:  ButtonStyle(backgroundColor: MaterialStatePropertyAll(const Color(0xFF00144B))),
+                                onPressed: () {
+                            
+                                  if(widget.userDetails.landlineOfficeIntercom.toString().length >22)
+                                  _makingPhoneCalltele(phonenumber.substring(13)); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE
+                                   if(phonenumber.length <=22)
+                                   _makingPhoneCalltele("0824-"+phonenumber.substring(13)); // THEIR PHONE NUMBER OR LANDLINE NUMBER ANY FEASIBLE 
+                                },
+                                child:const  Icon(Icons.call,color: Colors.white,),
+                              ) ,
+                                             ),
+                       ],
+                     )
+                ),
+
+
                  //condition to check whether the landlineResdential exist
                 if(widget.userDetails.landlineResidential!=null)
                   Card(
@@ -457,6 +533,7 @@ class IconTile extends StatelessWidget {
   IconTile({this.imgAssetPath, this.backColor});// 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       margin: EdgeInsets.only(right: 16),
       child: Container(
