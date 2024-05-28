@@ -1,17 +1,14 @@
+import 'package:TelephoneDirectory/core/logic/sorting_logic.dart';
 import 'package:TelephoneDirectory/models/designation.dart';
 import 'package:TelephoneDirectory/screens/loadingpage.dart';
-import 'dart:convert'; 
-import 'package:flutter/material.dart'; 
+import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:TelephoneDirectory/screens/uidetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:TelephoneDirectory/models/facultyindividual.dart';
-import 'package:TelephoneDirectory/models/department.dart'; 
+import 'package:TelephoneDirectory/models/department.dart';
 
-//Global values to be used in the screen
-List<facultyindividual> allindividuals = [];
-List<department> alldepartments = []; //
-List<designation> designs = [];
-String name = "";
+
 
 class SearchMenu extends StatefulWidget {
   const SearchMenu({super.key});
@@ -24,10 +21,11 @@ class SearchMenu extends StatefulWidget {
 }
 
 class _SearchMenuState extends State<SearchMenu> {
-  
-//List of variable used within the class
-  var nametext = TextEditingController();
-  var topictext = TextEditingController();
+//List of variable used within the class  //
+  List<facultyindividual> allindividuals = [];
+  List<department> alldepartments = []; //
+  List<designation> designs = [];
+  var nametext = TextEditingController();//
   bool isapicall = false;
   bool isdepartment = false;
   List<facultyindividual> filteredlist = [];
@@ -102,7 +100,7 @@ class _SearchMenuState extends State<SearchMenu> {
 
     final response = await http.get(url); //
     final data = jsonDecode(response.body);
-
+   
     // If the status code is 2000 implies thata the data is
     // successfully fetched form the net, thus we format the data
     // accordingly, so that the images are shown as we wish
@@ -134,46 +132,7 @@ class _SearchMenuState extends State<SearchMenu> {
     // based on the name entered and the department chosen
 
     setState(() {
-      filteredlist = allindividuals.where((element) {
-        //Logic for the sorting part
-        if (name == "" && departmentid == -1) {
-          return true;
-        } else {
-          if (name != "" && departmentid == -1) {
-            return element.name!.toLowerCase().contains(name.toLowerCase());
-          } else if (name == "" && departmentid != -1) {
-            return element.departmentId == departmentid;
-          } else if (name != "" && departmentid != -1) {
-            return element.name!.toLowerCase().contains(name.toLowerCase()) &&
-                element.departmentId == departmentid;
-          }
-        }
-        return false;
-      }).toList();
-
-      if (name != "" || departmentid != -1) {
-
-        filteredlist.sort((a, b) {
-          // Compare based on custom order
-          if (a.customOrder != b.customOrder) {
-            return a.customOrder!.compareTo(b.customOrder!);
-          } else {
-            // If custom orders are the same, compare based on joining date
-            if (a.joiningDate != null && b.joiningDate != null) {
-              return a.joiningDate!.compareTo(b.joiningDate!);
-            } else if (a.joiningDate == null && b.joiningDate == null) {
-              // If joining dates are null for both, compare based on name
-              return a.name!.compareTo(b.name!);
-            } else if (a.joiningDate == null) {
-              // Handle case when joining date of a is null
-              return 1; // a comes after b
-            } else {
-              // Handle case when joining date of b is null
-              return -1; // a comes before b
-            }
-          }
-        });
-      }
+      filteredlist=Sorting.sort(name, departmentid, allindividuals);
     });
   }
 
@@ -182,7 +141,6 @@ class _SearchMenuState extends State<SearchMenu> {
   @override
   void dispose() {
     nametext.dispose();
-    topictext.dispose();
     super.dispose();
   }
 
@@ -192,8 +150,8 @@ class _SearchMenuState extends State<SearchMenu> {
   @override
   void initState() {
     _fetchindividuals();
-    
-     //function call to fetch i=the individual faculties details
+
+    //function call to fetch i=the individual faculties details
     // once the data is fetched its stored in the filtered list
     // which will be used to show the details
 
@@ -208,7 +166,7 @@ class _SearchMenuState extends State<SearchMenu> {
 
   @override
   Widget build(BuildContext context) {
-//code to show the values in alphabetical order
+//code to show the values of section in alphabetical order here.
 
     fetcheddepartments.sort(
       (a, b) {
@@ -263,7 +221,7 @@ class _SearchMenuState extends State<SearchMenu> {
               ),
               const SizedBox(
                 height: 15,
-              ),//
+              ), //
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -278,7 +236,8 @@ class _SearchMenuState extends State<SearchMenu> {
                             itemHeight: 60,
                             isExpanded: true,
                             iconSize: 35,
-                            borderRadius: const BorderRadius.all(Radius.circular(11)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(11)),
                             hint: const Text("Select the section"),
                             elevation: 8,
                             items: [
@@ -296,7 +255,7 @@ class _SearchMenuState extends State<SearchMenu> {
                             value: _dropdownvalue,
                             onChanged: (newvalue) {
                               _dropdownvalue = newvalue!;
-                              
+
                               // thus for every new value inserted we use call
                               // the search on parameter method.
 
@@ -381,13 +340,13 @@ class _SearchMenuState extends State<SearchMenu> {
                                         overflow: TextOverflow.fade,
                                         maxLines: 1,
                                         style: const TextStyle(
-                                            color:  Color(0xFF192F59),
+                                            color: Color(0xFF192F59),
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold)),
                                     Text(
                                         "Office: ${filteredlist[index].landlineOfficeIntercom.toString()}",
                                         style: const TextStyle(
-                                          color:  Color(0xFF192F59),
+                                          color: Color(0xFF192F59),
                                           fontSize: 11,
                                         )),
                                   ],
@@ -395,7 +354,6 @@ class _SearchMenuState extends State<SearchMenu> {
                               ),
                             ],
                           ),
-                          //   tileColor: const Color(0xFF192F59),
                           onTap: () {
                             String depart = "";
                             for (department d in fetcheddepartments) {
@@ -432,25 +390,24 @@ class _SearchMenuState extends State<SearchMenu> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Image.asset(
-            'assets/justlogo.png',
-            width: 42,
-            height: 42, // Adjust the fit of the image
-          ),
-          const SizedBox(
-            width: 7,
-          ),
-          const Text(
-            "Telephone Directory",
-            style: TextStyle(fontSize: 22, color: Colors.white),
-          ),
-        ]),
-        backgroundColor: const Color(0xFF192F59),
-        centerTitle: true
-      ),
+          title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Image.asset(
+              'assets/justlogo.png',
+              width: 42,
+              height: 42, // Adjust the fit of the image
+            ),
+            const SizedBox(
+              width: 7,
+            ),
+            const Text(
+              "Telephone Directory",
+              style: TextStyle(fontSize: 22, color: Colors.white),
+            ),
+          ]),
+          backgroundColor: const Color(0xFF192F59),
+          centerTitle: true),
       body: content,
     );
   }
 }
-
+//
